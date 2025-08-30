@@ -1,0 +1,9 @@
+# Google Gemini Configuration
+GOOGLE_API_KEY=your_google_api_key_here
+
+# Chat Configuration
+GEMINI_MODEL=gemini-2.0-flash
+MAX_TOKENS=1000
+TEMPERATURE=0.7
+MEMORY_SIZE=10
+
