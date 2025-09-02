@@ -1,0 +1,12 @@
+# Environment variables for MCP Server Manager
+# Copy this to .env and fill in your actual values
+
+# Google Generative AI API Key (required)
+GOOGLE_API_KEY=your_google_api_key_here
+
+# Optional: Customize Gemini model
+# GEMINI_MODEL=gemini-2.0-flash
+
+# Optional: Customize temperature and other parameters
+# GEMINI_TEMPERATURE=0.7
+# GEMINI_MAX_TOKENS=4096

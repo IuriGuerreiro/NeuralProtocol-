@@ -1,0 +1,9 @@
+{
+    "mcpServers": {
+        "sqlite": {
+            "transport": "stdio",
+            "command": "uvx",
+            "args": ["mcp-server-sqlite", "--db-path", "./test.db"]
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "mcpServers": {
+        "terminal_server": {
+            "transport": "stdio",
+            "command": "python",
+            "args": ["../../src/MCPServers/terminal_server.py"]
+        },
+        "http_math_server": {
+            "transport": "http",
+            "url": "http://localhost:8000"
+        },
+        "simple_http_server": {
+            "transport": "http",
+            "url": "http://localhost:8001"
+        }
+    }
+}
