@@ -1,0 +1,145 @@
+.chat-message {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  max-width: 80%;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-message.user-message {
+  align-self: flex-end;
+}
+
+.chat-message.assistant-message {
+  align-self: flex-start;
+}
+
+.chat-message.system-message {
+  align-self: center;
+  max-width: 60%;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.role-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.role-icon {
+  font-size: 1.1rem;
+}
+
+.role-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.user-message .role-name {
+  color: #007bff;
+}
+
+.assistant-message .role-name {
+  color: #28a745;
+}
+
+.system-message .role-name {
+  color: #6c757d;
+}
+
+.message-timestamp {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.message-content {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-message .message-content {
+  background: #007bff;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.assistant-message .message-content {
+  background: white;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  border-bottom-left-radius: 4px;
+}
+
+.system-message .message-content {
+  background: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.message-line {
+  margin: 0;
+}
+
+.message-line:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+/* Code-like formatting for messages that might contain code */
+.message-content code,
+.message-content pre {
+  background: rgba(0,0,0,0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.user-message .message-content code,
+.user-message .message-content pre {
+  background: rgba(255,255,255,0.2);
+}
+
+.assistant-message .message-content pre {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  overflow-x: auto;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .chat-message {
+    max-width: 90%;
+  }
+  
+  .message-content {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .role-name {
+    font-size: 0.8rem;
+  }
+  
+  .message-timestamp {
+    font-size: 0.7rem;
+  }
+}

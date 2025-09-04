@@ -1,159 +1,296 @@
-# NeuralProtocol - AI-Powered MCP Chat Platform
+# Neural Chat Engine
 
-**NeuralProtocol** is a sophisticated AI chat application built with **Langchain**, **Pydantic**, and **Gemini 2.0 Flash**. It features intelligent conversation management with automatic summarization, preserving context while enabling unlimited conversation length.
+A comprehensive ChatGPT-like chat engine built with Django and React, featuring MCP (Model Context Protocol) server support for extensible AI tool integration.
 
-## 🚀 Future Vision
+## 🚀 Features
 
-**NeuralProtocol** is designed to evolve into a comprehensive web-based AI chat platform with:
+### Core Architecture
+- **Backend**: Django REST Framework with MongoDB for chat storage
+- **Frontend**: React-based chat interface (to be implemented)
+- **Authentication**: SQLite-based user management with token authentication
+- **Real-time**: WebSocket support via Django Channels and Redis
+- **MCP Integration**: Support for stdio, HTTP, SSE, and streamable_http transports
 
-- **Modern Web Interface**: Responsive, intuitive chat UI with real-time messaging
-- **Custom REST API Backend**: Built-in API endpoints for seamless third-party integrations
-- **Multi-Platform Support**: Web, mobile-responsive, and potential desktop applications
-- **User Management**: Authentication, user profiles, and conversation history
-- **Real-time Features**: WebSocket connections, typing indicators, and live updates
+### MCP Server Support
+- **Multi-Transport**: stdio, HTTP, Server-Sent Events (SSE), and Streamable HTTP
+- **Tool Management**: Unified interface for MCP tools with enable/disable functionality
+- **Auto-Discovery**: Automatic tool loading from configured MCP servers
+- **Async Processing**: Full async support for MCP server communication
 
-## 🔧 Current Features
+### Chat System
+- **MongoDB Integration**: High-performance chat and message storage
+- **User Management**: Django-based authentication with SQLite
+- **Real-time Messaging**: WebSocket support for live chat updates
+- **Message History**: Efficient pagination and retrieval
+- **Chat Statistics**: Detailed analytics for users and conversations
 
-### **Smart Memory Management**
-- **Automatic Summarization**: Creates intelligent summaries when memory limit is reached
-- **Context Preservation**: Maintains important details like names, preferences, and key points
-- **Unlimited Conversations**: No conversation length restrictions
-- **Memory Efficiency**: Only keeps essential information
+## 📋 Architecture Overview
 
-### **AI Integration**
-- **Gemini 2.0 Flash**: Google's advanced AI model for intelligent responses
-- **Langchain Framework**: Latest features and best practices
-- **Fallback Support**: SimpleLLM for testing without API keys
-
-### **Conversation Management**
-- **Multiple Conversations**: Support for multiple chat sessions
-- **History Tracking**: Complete conversation history with smart summarization
-- **Memory Status**: Real-time memory and summary information
-- **Easy Commands**: Simple commands for managing conversations
+```
+Neural Chat Engine
+├── Django Backend (Port 8000)
+│   ├── REST API Endpoints
+│   ├── MongoDB Chat Storage
+│   ├── SQLite User Management
+│   └── MCP Server Integration
+├── React Frontend (Port 3000)
+│   ├── Chat Interface
+│   ├── Tool Management
+│   └── Real-time Updates
+├── Redis (Port 6379)
+│   ├── WebSocket Channel Layer
+│   └── Task Queue
+└── MCP Servers
+    ├── STDIO Servers (Local)
+    ├── HTTP Servers (Remote)
+    ├── SSE Servers (Remote)
+    └── Streamable HTTP (Remote)
+```
 
 ## 🛠️ Installation
 
-1. **Clone the repository**
+### Prerequisites
+- Python 3.9+
+- Node.js 16+
+- MongoDB (running on localhost:27017)
+- Redis (running on localhost:6379)
+
+### Backend Setup
+
+1. **Clone and navigate to the project**:
    ```bash
-   git clone <repository-url>
-   cd LangchainBasedMCPClient
+   cd NeuralProtocol-
    ```
 
-2. **Install dependencies**
+2. **Create virtual environment**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up environment variables**
+4. **Set up environment variables**:
    ```bash
-   cp env_example.txt .env
-   # Edit .env with your Google API key
+   cp .env.example .env
+   # Edit .env with your configuration
    ```
 
-4. **Run the application**
+5. **Run migrations**:
    ```bash
-   python main.py
+   python manage.py migrate
+   python manage.py createsuperuser
    ```
 
-## 📱 Usage
+6. **Start the server**:
+   ```bash
+   python manage.py runserver
+   ```
 
-### **Chat Commands**
-- **Regular messages**: Type normally to chat with the AI
-- **`quit`**: Exit the application
-- **`clear`**: Clear current conversation
-- **`history`**: Show conversation history
-- **`status`**: Show application status
-- **`memory`**: Show detailed memory information
+### MCP Servers Setup
 
-### **Memory Management**
-The system automatically:
-- Tracks conversation context
-- Creates summaries when memory fills up
-- Preserves important information
-- Maintains conversation continuity
+1. **Start the example math server**:
+   ```bash
+   python mcp_servers/stdio_math_server.py
+   ```
 
-## ⚙️ Configuration
+2. **Configure MCP servers** in `mcp_servers_config.json`:
+   ```json
+   {
+     "mcpServers": {
+       "stdio_math_server": {
+         "transport": "stdio",
+         "command": "python",
+         "args": ["mcp_servers/stdio_math_server.py"]
+       }
+     }
+   }
+   ```
 
-### **Environment Variables**
-- `GOOGLE_API_KEY`: Your Google API key for Gemini
-- `GEMINI_MODEL`: Gemini model to use (default: gemini-2.0-flash)
-- `MAX_TOKENS`: Maximum response length (default: 1000)
-- `TEMPERATURE`: Response creativity (default: 0.7)
-- `MEMORY_SIZE`: Messages before summarization (default: 10)
+## 📡 API Endpoints
 
-### **Memory Settings**
-- **Default Memory Size**: 10 messages
-- **Summary Trigger**: Automatic when limit is reached
-- **Context Preservation**: Summary + last 2 messages
-- **Fallback**: Last 3 messages if summarization fails
+### Authentication
+- `POST /api/v1/auth/token/` - Get authentication token
 
-## 🏗️ Architecture
+### Chat Management
+- `GET /api/v1/chats/` - List user chats
+- `POST /api/v1/chats/` - Create new chat
+- `GET /api/v1/chats/{id}/` - Get specific chat
+- `PUT/PATCH /api/v1/chats/{id}/` - Update chat
+- `DELETE /api/v1/chats/{id}/` - Delete chat
 
-### **Core Components**
-- **NeuralProtocolApp**: Main application class
-- **NeuralProtocolChatManager**: Chat and conversation management
-- **ConversationMemory**: Smart memory with summarization
-- **Pydantic Models**: Data validation and structure
+### Messages
+- `GET /api/v1/chats/{id}/messages/` - Get chat messages
+- `POST /api/v1/chats/{id}/add_message/` - Add message to chat
+- `POST /api/v1/chats/{id}/process/` - Process user message with AI
 
-### **Technology Stack**
-- **Python 3.8+**: Core runtime
-- **Langchain**: AI framework integration
-- **Pydantic**: Data validation and settings
-- **Google Generative AI**: Gemini model integration
-- **Logging**: Comprehensive logging system
+### Statistics
+- `GET /api/v1/stats/` - Get user statistics
+- `GET /api/v1/chats/{id}/stats/` - Get chat statistics
 
-## 🔌 Future Integrations
+### MCP Tools
+- `GET /api/v1/tools/` - List available MCP tools
+- `POST /api/v1/tools/execute/` - Execute MCP tool
+- `POST /api/v1/tools/{name}/enable/` - Enable tool
+- `POST /api/v1/tools/{name}/disable/` - Disable tool
 
-### **Plugin System**
-- Modular architecture for third-party tools
-- API gateway for external services
-- Webhook support for real-time notifications
+## 🔧 Configuration
 
-### **API Development**
-- RESTful endpoints for chat operations
-- Authentication and user management
-- Real-time communication protocols
+### Environment Variables (.env)
+```env
+# MongoDB Configuration
+MONGODB_HOST=localhost
+MONGODB_PORT=27017
+MONGODB_DATABASE=neural_chat
 
-### **Web Interface**
-- Modern React/Vue.js frontend
-- Responsive design for all devices
-- Real-time chat experience
+# Redis Configuration  
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_DB=0
 
-## 📊 Performance
+# LLM API Keys
+GOOGLE_API_KEY=your_google_api_key
+OPENAI_API_KEY=your_openai_api_key
+ANTHROPIC_API_KEY=your_anthropic_api_key
 
-- **Response Time**: 0.3s - 1.5s (including summarization)
-- **Memory Efficiency**: Automatic optimization
-- **Scalability**: Ready for web deployment
-- **Reliability**: Fallback mechanisms and error handling
+# Django Settings
+SECRET_KEY=your_secret_key
+DEBUG=True
+```
 
-## 🚧 Development Status
+### MCP Server Configuration
+Edit `mcp_servers_config.json` to configure MCP servers:
 
-- **✅ Phase 1**: Core chat functionality with smart memory
-- **🌐 Phase 2**: Web interface and basic API endpoints
-- **🔌 Phase 3**: Plugin system and third-party integrations
-- **📱 Phase 4**: Mobile optimization and advanced features
-- **🏢 Phase 5**: Enterprise features and deployment tools
+```json
+{
+  "mcpServers": {
+    "stdio_math_server": {
+      "transport": "stdio",
+      "command": "python",
+      "args": ["mcp_servers/stdio_math_server.py"]
+    },
+    "http_server": {
+      "transport": "http",
+      "url": "http://localhost:8005"
+    },
+    "sse_server": {
+      "transport": "sse", 
+      "url": "http://localhost:8006/sse"
+    },
+    "streamable_server": {
+      "transport": "streamable_http",
+      "url": "http://localhost:8007/mcp"
+    }
+  }
+}
+```
+
+## 🧩 MCP Server Integration
+
+The system supports four MCP transport types:
+
+### 1. STDIO Transport
+- **Use Case**: Local Python/Node.js servers
+- **Communication**: Standard input/output
+- **Example**: Math server, file operations, local tools
+
+### 2. HTTP Transport  
+- **Use Case**: REST API-based services
+- **Communication**: HTTP requests
+- **Example**: Web services, databases, external APIs
+
+### 3. Server-Sent Events (SSE)
+- **Use Case**: Real-time streaming data
+- **Communication**: EventSource/SSE
+- **Example**: Live data feeds, monitoring, notifications
+
+### 4. Streamable HTTP
+- **Use Case**: Bidirectional streaming
+- **Communication**: HTTP with streaming
+- **Example**: Large data processing, real-time analysis
+
+## 📊 Data Models
+
+### Chat Schema (MongoDB)
+```javascript
+{
+  _id: ObjectId,
+  user_id: Number,      // Django User ID
+  title: String,
+  created_at: Date,
+  updated_at: Date,
+  message_count: Number,
+  metadata: Object,
+  is_active: Boolean
+}
+```
+
+### Message Schema (MongoDB)
+```javascript
+{
+  _id: ObjectId,
+  chat_id: ObjectId,
+  role: String,         // 'user', 'assistant', 'system'
+  content: String,
+  created_at: Date,
+  metadata: Object,
+  tokens: Number
+}
+```
+
+## 🔐 Security Features
+
+- **Authentication**: Token-based authentication
+- **CORS**: Configured for React frontend
+- **Input Validation**: Pydantic serializers
+- **SQL Injection**: MongoDB aggregation pipeline protection
+- **Rate Limiting**: Built-in Django REST framework throttling
+- **Tool Approval**: Optional approval workflow for MCP tools
+
+## 🚧 TODO / Next Steps
+
+1. **Frontend Implementation**:
+   - React chat interface
+   - Real-time message updates
+   - Tool management UI
+   - User authentication flow
+
+2. **Enhanced Features**:
+   - File upload support
+   - Voice message integration
+   - Chat export functionality
+   - Advanced search capabilities
+
+3. **Production Setup**:
+   - Docker containerization
+   - Nginx reverse proxy
+   - SSL/TLS configuration
+   - Monitoring and logging
+
+4. **LLM Integration**:
+   - Complete Langchain integration
+   - Streaming response support
+   - Tool execution in chat context
+   - Multi-model support
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our contributing guidelines for:
-- Code standards
-- Testing requirements
-- Documentation updates
-- Feature proposals
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Links
+## 🙏 Acknowledgments
 
-- **Documentation**: [NeuralProtocol Docs]
-- **API Reference**: [API Documentation]
-- **Community**: [Discord/Forum]
-- **Issues**: [GitHub Issues]
-
----
-
-**NeuralProtocol** - Where AI meets protocol, creating the future of intelligent communication. 🚀
-
+- Built with Django REST Framework
+- MCP (Model Context Protocol) integration
+- Inspired by ChatGPT architecture
+- MongoDB for high-performance chat storage

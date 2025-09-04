@@ -1,0 +1,8 @@
+#root {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* Remove unused Vite default styles since we're using custom auth layout */

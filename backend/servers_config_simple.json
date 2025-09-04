@@ -1,0 +1,19 @@
+{
+    "mcpServers": {
+        "http_math_server": {
+            "transport": "http",
+            "url": "http://localhost:8005"
+        },
+        "archon_server": {
+            "transport": "streamable_http",
+            "args": [],
+            "url": "http://localhost:8051/mcp"
+        },
+        "stdio_example_server": {
+            "transport": "stdio",
+            "command": "python",
+            "args": ["mcp_servers/stdio_example_server.py"]
+        }
+        
+    }
+}

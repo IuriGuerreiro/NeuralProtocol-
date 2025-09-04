@@ -1,0 +1,182 @@
+.message-input-container {
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  padding: 1rem;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+.message-input-form {
+  max-width: 100%;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.input-wrapper:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+.message-textarea {
+  flex: 1;
+  border: none;
+  background: transparent;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.5rem;
+  max-height: 120px;
+  min-height: 24px;
+  overflow-y: auto;
+}
+
+.message-textarea::placeholder {
+  color: #adb5bd;
+}
+
+.message-textarea:disabled {
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.send-button {
+  background: #007bff;
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.send-button:hover:not(:disabled) {
+  background: #0056b3;
+  transform: scale(1.05);
+}
+
+.send-button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.send-icon {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.loading-spinner {
+  color: white;
+  font-size: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.input-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.char-count {
+  font-weight: 500;
+}
+
+.char-count.near-limit {
+  color: #fd7e14;
+}
+
+.char-count.at-limit {
+  color: #dc3545;
+}
+
+.input-hint {
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .message-input-container {
+    padding: 0.75rem;
+  }
+  
+  .input-wrapper {
+    padding: 0.4rem;
+  }
+  
+  .message-textarea {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+  }
+  
+  .send-button {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .input-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    margin-top: 0.4rem;
+  }
+  
+  .input-hint {
+    font-size: 0.7rem;
+  }
+}
+
+/* Focus and accessibility improvements */
+.message-textarea:focus {
+  box-shadow: none; /* Remove default textarea focus outline */
+}
+
+.send-button:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Animation for send button */
+.send-button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* Scrollbar styling for webkit browsers */
+.message-textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.message-textarea::-webkit-scrollbar-thumb {
+  background: #ced4da;
+  border-radius: 3px;
+}
+
+.message-textarea::-webkit-scrollbar-thumb:hover {
+  background: #adb5bd;
+}
